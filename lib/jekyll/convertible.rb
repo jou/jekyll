@@ -39,8 +39,17 @@ module Jekyll
         self.content = self.site.markdown(self.content)
       when 'haml'
         self.ext = ".html"
+        haml_options = { :attr_wrapper => %{"} }
+        if self.site.config.has_key? 'haml_options'
+          self.site.config['haml_options'].each do |key, val|
+            # convert string values starting with ':' to symbols
+            val = val.to_sym if val.class == String and val[0..0] == ':'
+            haml_options[key.to_sym] = val
+          end
+        end
+
         # Actually rendered in do_layout.
-        self.content = Haml::Engine.new(self.content, :attr_wrapper => %{"})
+        self.content = Haml::Engine.new(self.content, haml_options)
       end
     end
 

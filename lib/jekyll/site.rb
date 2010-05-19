@@ -1,7 +1,7 @@
 module Jekyll
 
   class Site
-    attr_accessor :config, :layouts, :posts, :collated_posts, :categories, :tags
+    attr_accessor :config, :environment, :layouts, :posts, :collated_posts, :categories, :tags
     attr_accessor :source, :dest, :lsi, :pygments, :pygments_cache, :permalink_style,
                   :sass, :post_defaults
 
@@ -19,6 +19,8 @@ module Jekyll
       self.pygments_cache  = config['pygments_cache']
       self.permalink_style = config['permalink'].to_sym
       self.post_defaults   = config['post_defaults'] || {}
+
+      self.environment     = config['environment']
 
       self.reset
       self.setup
@@ -268,13 +270,15 @@ module Jekyll
 
     # The Hash payload containing site-wide data
     #
-    # Returns {"site" => {"time" => <Time>,
+    # Returns {"site" => {"environment" => <String>,
+    #                     "time" => <Time>,
     #                     "posts" => [<Post>],
     #                     "categories" => [<Post>],
     #                     "tags" => [<Post>],
     #                     "topics" => [<Post>] }}
     def site_payload
       {"site" => {
+        "environment" => self.environment,
         "time" => Time.now,
         "posts" => self.posts.sort { |a,b| b <=> a },
         "categories" => post_attr_hash('categories'),

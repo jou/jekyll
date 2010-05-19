@@ -43,6 +43,8 @@ module Jekyll
     'markdown'     => 'maruku',
     'permalink'    => 'date',
 
+    'environment'  => 'development',
+
     'maruku'       => {
       'use_tex'    => false,
       'use_divs'   => false,

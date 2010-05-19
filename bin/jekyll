@@ -40,6 +40,10 @@ opts = OptionParser.new do |opts|
     options['lsi'] = true
   end
 
+  opts.on("--environment [ENV]", "Use environment (default 'development')") do |env|
+    options['environment'] = env
+  end
+
   opts.on("--pygments", "Use pygments to highlight code") do
     options['pygments'] = true
   end

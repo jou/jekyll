@@ -39,7 +39,10 @@ module Jekyll
         self.content = self.site.markdown(self.content)
       when 'haml'
         self.ext = ".html"
-        haml_options = { :attr_wrapper => %{"} }
+        haml_options = { 
+          :attr_wrapper => %{"},
+          :filename => @name
+        }
         if self.site.config.has_key? 'haml_options'
           self.site.config['haml_options'].each do |key, val|
             # convert string values starting with ':' to symbols

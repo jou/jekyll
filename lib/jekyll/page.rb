@@ -27,6 +27,15 @@ module Jekyll
       #self.transform
     end
 
+    # The full path and filename of the post.
+    # Defined in the YAML of the post body
+    # (Optional)
+    #
+    # Returns <String>
+    def permalink
+      self.data && self.data['permalink']
+    end
+
     # Extract information from the page filename
     #   +name+ is the String filename of the page file
     #
@@ -50,14 +59,20 @@ module Jekyll
     #
     # Returns nothing
     def write(dest)
-      FileUtils.mkdir_p(File.join(dest, @dir))
+      if self.permalink
+        path = File.join(dest, self.permalink)
+        FileUtils.mkdir_p(File.dirname(path))
+      else
+        FileUtils.mkdir_p(File.join(dest, @dir))
 
-      name = @name
-      if self.ext != ""
-        name = @name.split(".")[0..-2].join('.') + self.ext
+        name = @name
+        if self.ext != ""
+          name = @name.split(".")[0..-2].join('.') + self.ext
+        end
+
+        path = File.join(dest, @dir, name)    
       end
 
-      path = File.join(dest, @dir, name)
       File.open(path, 'w') do |f|
         f.write(self.output)
       end

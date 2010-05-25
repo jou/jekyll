@@ -43,12 +43,15 @@ module Jekyll
           :attr_wrapper => %{"},
           :filename => @name
         }
-        if self.site.config.has_key? 'haml_options'
-          self.site.config['haml_options'].each do |key, val|
-            # convert string values starting with ':' to symbols
-            val = val[1..val.length].to_sym if val.class == String and val[0..0] == ':'
-            haml_options[key.to_sym] = val
-          end
+
+        more_options = {}
+        more_options.merge!(self.site.config['haml_options']) if self.site.config.has_key? 'haml_options'
+        more_options.merge!(self.data['haml_options']) if self.data.has_key? 'haml_options'
+
+        more_options.each do |key, val|
+          # convert string values starting with ':' to symbols
+          val = val[1..val.length].to_sym if val.class == String and val[0..0] == ':'
+          haml_options[key.to_sym] = val
         end
 
         # Actually rendered in do_layout.

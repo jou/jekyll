@@ -247,7 +247,7 @@ module Jekyll
       files = files.select { |f| File.extname(File.join(base, f)) == ".sass" }
       files.each do |f|
         input = File.open(File.join(base, f), "r")
-        result = Sass::Engine.new(input.read, :style => :compact, :load_paths => base).render
+        result = Sass::Engine.new(input.read, :style => :compact, :load_paths => [base]).render
         FileUtils.mkdir_p(File.join(self.dest, dir))
         output = File.open(File.join(self.dest, dir, f).gsub(/.sass\Z/, ".css"), "w") do |o|
           o.write(result)
